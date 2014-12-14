@@ -6,6 +6,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.List;
 
 /**
  * Created by Администратор on 27.11.2014.
@@ -21,6 +23,8 @@ public class NewTest extends TestCase {
 
 
     public void test1() {
+
+
         JPAUtil.setPersistentUnitName("test-persistence");
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();

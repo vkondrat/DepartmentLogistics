@@ -1,7 +1,11 @@
 package com.vkondrat.experiment;
 
+import com.google.gson.Gson;
 import com.vkondrat.experiment.entities.Employee;
 import com.vkondrat.experiment.util.JPAUtil;
+import spark.Request;
+import spark.Response;
+import spark.Route;
 
 
 import javax.persistence.EntityManager;
@@ -9,26 +13,27 @@ import javax.persistence.Query;
 import java.sql.SQLException;
 import java.util.List;
 
+import static spark.Spark.get;
+import static spark.SparkBase.setPort;
+
 public class App 
 {
     public static void main( String[] args )throws SQLException {
-        EntityManager em = JPAUtil.getInstance().getEm();
 
-        em.getTransaction().begin();
-        em.createQuery("DELETE FROM Employee").executeUpdate();
-        em.persist(new Employee("Vasya", 25));
-        em.persist(new Employee("Petro", 30));
-        em.getTransaction().commit();
-
-        Query query = em.createQuery("SELECT e FROM Employee e");
-        List<Employee> list = (List<Employee>) query.getResultList();
-        for (Employee employee : list) {
-            System.out.println(employee.getName());
-        }
-
-
-        em.close();
-        System.out.println("END");
+        setPort(12345);
+        get("/dest", new Route() {
+            @Override
+            public Object handle(Request request, Response response) {
+                Gson gson = new Gson();
+                String data = request.queryParams("data");
+                System.out.println("param: " + data);
+                Employee example = gson.fromJson(data, Employee.class);
+                System.out.println(example.toString());
+                example.setName("modifiedName");
+                String json = gson.toJson(example);
+                return json;
+            }
+        });
     }
 
 

@@ -3,7 +3,7 @@ package com.vkondrat.experiment.entities;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 @Entity
 public class Project {

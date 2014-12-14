@@ -9,8 +9,3 @@
 \u000a    alter table Employee \u000a        add constraint FK_lk0a412kck2kdc6slousi528s \u000a        foreign key (department_id) \u000a        references Department
 \u000a    alter table Project_Employee \u000a        add constraint FK_td8xg9wcrlxkv8obt0d09wwhw \u000a        foreign key (employeeList_id) \u000a        references Employee
 \u000a    alter table Project_Employee \u000a        add constraint FK_kroybtf7vwjelh7oum4i7rx6 \u000a        foreign key (projectList_id) \u000a        references Project
-DELETE FROM EMPLOYEE WHERE ID=22
-DELETE FROM EMPLOYEE WHERE ID=23
-INSERT INTO EMPLOYEE VALUES(24,25,'Vasya',NULL)
-INSERT INTO EMPLOYEE VALUES(25,30,'Petro',NULL)
-COMMIT

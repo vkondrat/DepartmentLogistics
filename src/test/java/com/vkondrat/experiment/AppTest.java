@@ -8,6 +8,9 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.List;
+
 
 /**
  * Unit experiment for simple App.
@@ -23,6 +26,25 @@ public class AppTest  extends TestCase {
 
     public void testSaveAndLoad() {
 
+        EntityManager em = JPAUtil.getInstance().getEm();
+
+        em.getTransaction().begin();
+        em.createQuery("DELETE FROM Employee").executeUpdate();
+        em.persist(new Employee("Vasya", 25));
+        em.persist(new Employee("Petro", 30));
+        em.getTransaction().commit();
+
+        Query query = em.createQuery("SELECT e FROM Employee e");
+        List<Employee> list = (List<Employee>) query.getResultList();
+        for (Employee employee : list) {
+            System.out.println(employee.getName());
+        }
+
+
+        em.close();
+        System.out.println("END");
+
+
      /*   EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
         String name = "Vasya";
@@ -35,8 +57,8 @@ public class AppTest  extends TestCase {
         assertEquals(name, vasya.getName());
         assertEquals(age, vasya.getAge());
         System.out.println("END!");
-        em.close();*/
-        System.out.println("test");
+        em.close();
+        System.out.println("test"); */
 
     }
     public void testApp()

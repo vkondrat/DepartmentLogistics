@@ -2,7 +2,7 @@ package com.vkondrat.experiment.entities;
 
 import javax.persistence.*;
 import java.util.List;
-import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  */
 
