@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="de09087d-c786-4a03-9940-47e4df5dbcfa" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/vkondrat/experiment/App.java" afterPath="$PROJECT_DIR$/src/main/java/com/vkondrat/experiment/App.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/vkondrat/experiment/AppTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/vkondrat/experiment/AppTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/vkondrat/experiment/entities/Department.java" afterPath="$PROJECT_DIR$/src/main/java/com/vkondrat/experiment/entities/Department.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/vkondrat/experiment/entities/Employee.java" afterPath="$PROJECT_DIR$/src/main/java/com/vkondrat/experiment/entities/Employee.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JPA_TestProject.iml" afterPath="$PROJECT_DIR$/JPA_TestProject.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/vkondrat/experiment/util/NewTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/vkondrat/experiment/util/NewTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/vkondrat/experiment/entities/Project.java" afterPath="$PROJECT_DIR$/src/main/java/com/vkondrat/experiment/entities/Project.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testdb.log" afterPath="$PROJECT_DIR$/testdb.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testdb.properties" afterPath="$PROJECT_DIR$/testdb.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testdb.script" afterPath="$PROJECT_DIR$/testdb.script" />
-    </list>
+    <list default="true" id="de09087d-c786-4a03-9940-47e4df5dbcfa" name="Default" comment="" />
     <ignored path="JPA_TestProject.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -727,12 +715,12 @@
       <option name="number" value="Default" />
       <updated>1418535681164</updated>
       <workItem from="1418535685092" duration="56000" />
-      <workItem from="1418535811378" duration="266000" />
+      <workItem from="1418535811378" duration="512000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="322000" />
+    <option name="totallyTimeSpent" value="568000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="10" y="23" width="1436" height="877" extended-state="0" />
