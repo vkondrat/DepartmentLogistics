@@ -1,9 +1,0 @@
-com/vkondrat/experiment/dao/DepartmentDao.class
-com/vkondrat/experiment/entities/Project.class
-com/vkondrat/experiment/entities/Department.class
-com/vkondrat/experiment/util/JPAUtil$Holder.class
-com/vkondrat/experiment/App.class
-com/vkondrat/experiment/util/JPAUtil$1.class
-com/vkondrat/experiment/dao/DepartmentDaoImplementation.class
-com/vkondrat/experiment/util/JPAUtil.class
-com/vkondrat/experiment/entities/Employee.class
