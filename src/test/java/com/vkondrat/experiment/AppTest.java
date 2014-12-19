@@ -34,7 +34,9 @@ public class AppTest  extends TestCase {
         em.persist(new Employee("Petro", 30));
         em.getTransaction().commit();
 
-        Query query = em.createQuery("SELECT e FROM Employee e");
+        Query query = em.createQuery("SELECT e FROM Employee e"); // where e.id=1|| where e.name='Vasya'
+        // where e.age>20 // Google JQL
+
         List<Employee> list = (List<Employee>) query.getResultList();
         for (Employee employee : list) {
             System.out.println(employee.getName());
