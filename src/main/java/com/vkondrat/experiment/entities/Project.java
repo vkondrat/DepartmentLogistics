@@ -23,6 +23,11 @@ public class Project {
         EndDate = endDate;
     }
 
+    public Project(List<Employee> employeeList, String name) {
+        this.employeeList = employeeList;
+        this.name = name;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {

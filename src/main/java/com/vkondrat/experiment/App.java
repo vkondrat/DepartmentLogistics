@@ -21,7 +21,6 @@ import static spark.Spark.get;
 import static spark.SparkBase.setPort;
 
 public class App {
-    //////// Add it to the DB
     //////// Add check for wrong input
     //////// Figure out the right format for start and enddate
 
@@ -30,9 +29,41 @@ public class App {
         if (args.length > 0)
             port = Integer.parseInt(args[0]);
         setPort(port);
-        get("/addEmployee", (request, response) -> new CRUDService<Employee>().saveFromJson(request.queryParams("data"), Employee.class));
+        get("/test", (request, response) -> "Scuba duba!" );
+
+
+        get("/addEmployee", (request, response) -> new CRUDService<Employee>().saveFromJson(request.queryParams("data"),Employee.class));
         get("/addDepartment", (request, response) -> new CRUDService<Department>().saveFromJson(request.queryParams("data"), Department.class));
         get("/addProject", (request, response) -> new CRUDService<Project>().saveFromJson(request.queryParams("data"), Project.class));
+
+        get("/dest", new Route() {
+            @Override
+            public Object handle(Request request, Response response) {
+                Gson gson = new Gson();
+                String data = request.queryParams("data");
+                System.out.println("param: " + data);
+                Employee example = gson.fromJson(data, Employee.class);
+                System.out.println(example.toString());
+                example.setName("modifiedName");
+                EntityManager em = JPAUtil.getInstance().getEm();
+
+                em.getTransaction().begin();
+                em.createQuery("DELETE FROM Employee").executeUpdate();
+                em.persist(example.getClass());
+                em.getTransaction().commit();
+                Query query = em.createQuery("SELECT e FROM Employee e"); // where e.id=1|| where e.name='Vasya'
+                // where e.age>20 // Google JQL
+
+                List<Employee> list = (List<Employee>) query.getResultList();
+                for (Employee employee : list) {
+                    System.out.println(employee.getName());
+                }
+                em.close();
+                String json = gson.toJson(example);
+                return json;
+            }
+        });
+
 
         get("/assignEmployeeToDepartment", (request, response) -> {
             Gson gson = new Gson();
