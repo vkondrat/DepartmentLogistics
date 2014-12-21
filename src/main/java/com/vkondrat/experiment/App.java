@@ -51,7 +51,12 @@ public class App {
             return "OK";
         });
 
-        get("/assignEmployeeToDepartment_2", (request, response) -> {
+        System.out.println("Finished");
+    }
+}
+
+/*
+ get("/assignEmployeeToDepartment_2", (request, response) -> {
             Gson gson = new Gson();
             String data = request.queryParams("data"); // {to: 1, what:34}
             Assignment assignment = gson.fromJson(data, Assignment.class);
@@ -62,14 +67,14 @@ public class App {
             Department department = em.find(Department.class, assignment.getTo());
             department.getEmployeeList().add(employee);
             employee.setDepartment(department);
+            em.merge(employee);
+            em.merge(department);
             em.getTransaction().commit();
             em.close();
             return "OK_2";
         });
 
-        System.out.println("Finished");
-    }
-}
+ */
 
 
 
