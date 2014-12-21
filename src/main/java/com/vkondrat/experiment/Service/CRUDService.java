@@ -22,7 +22,6 @@ public class  CRUDService<T> {
         T entity = gson.fromJson(json, clazz);
 
         EntityManager em = JPAUtil.getInstance().getEm();
-
         em.getTransaction().begin();
         em.merge(entity);
         em.getTransaction().commit();
