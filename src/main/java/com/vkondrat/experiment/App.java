@@ -29,26 +29,49 @@ public class App {
         if (args.length > 0)
             port = Integer.parseInt(args[0]);
         setPort(port);
-        get("/test", (request, response) -> "Hello World!" );
 
+        get("/test", new Route() {
+            @Override
+            public Object handle(Request request, Response response) {
+                return "Hello World!";
+            }
+        });
 
-        get("/addEmployee", (request, response) -> new CRUDService<Employee>().saveFromJson(request.queryParams("data"),Employee.class));
-        get("/addDepartment", (request, response) -> new CRUDService<Department>().saveFromJson(request.queryParams("data"), Department.class));
-        get("/addProject", (request, response) -> new CRUDService<Project>().saveFromJson(request.queryParams("data"), Project.class));
+        get("/addEmployee", new Route() {
+            @Override
+            public Object handle(Request request, Response response) {
+                return new CRUDService<Employee>().saveFromJson(request.queryParams("data"), Employee.class);
+            }
+        });
+        get("/addDepartment", new Route() {
+            @Override
+            public Object handle(Request request, Response response) {
+                return new CRUDService<Department>().saveFromJson(request.queryParams("data"), Department.class);
+            }
+        });
+        get("/addProject", new Route() {
+            @Override
+            public Object handle(Request request, Response response) {
+                return new CRUDService<Project>().saveFromJson(request.queryParams("data"), Project.class);
+            }
+        });
 
-        get("/assignEmployeeToDepartment", (request, response) -> {
-            Gson gson = new Gson();
-            String data = request.queryParams("data"); // {to: 1, whatIds: [1,2,3,4]}
-            Assignment assignment = gson.fromJson(data, Assignment.class);
-            CRUDService<Employee> employeeService = new CRUDService<>();
-            Employee employee = employeeService.loadById(assignment.getWhat(), Employee.class);
-            CRUDService<Department> departmentService = new CRUDService<>();
-            Department department = departmentService.loadById(assignment.getTo(), Department.class);
-            department.getEmployeeList().add(employee);
-            employee.setDepartment(department);
-            employeeService.update(employee);
-            departmentService.update(department);
-            return "OK";
+        get("/assignEmployeeToDepartment", new Route() {
+            @Override
+            public Object handle(Request request, Response response) {
+                Gson gson = new Gson();
+                String data = request.queryParams("data"); // {to: 1, whatIds: [1,2,3,4]}
+                Assignment assignment = gson.fromJson(data, Assignment.class);
+                CRUDService<Employee> employeeService = new CRUDService<>();
+                Employee employee = employeeService.loadById(assignment.getWhat(), Employee.class);
+                CRUDService<Department> departmentService = new CRUDService<>();
+                Department department = departmentService.loadById(assignment.getTo(), Department.class);
+                department.getEmployeeList().add(employee);
+                employee.setDepartment(department);
+                employeeService.update(employee);
+                departmentService.update(department);
+                return "OK";
+            }
         });
 
         System.out.println("Finished");
