@@ -24,7 +24,7 @@ public class AppTest  extends TestCase {
         return new TestSuite(AppTest.class);
     }
 
-    public void testSaveAndLoad() {
+   /* public void testSaveAndLoad() {
 
         EntityManager em = JPAUtil.getInstance().getEm();
 
@@ -45,7 +45,8 @@ public class AppTest  extends TestCase {
 
         em.close();
         System.out.println("END");
-
+    }
+*/
 
      /*   EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
@@ -62,7 +63,7 @@ public class AppTest  extends TestCase {
         em.close();
         System.out.println("test"); */
 
-    }
+
     public void testApp()
     {
         assertTrue( true );

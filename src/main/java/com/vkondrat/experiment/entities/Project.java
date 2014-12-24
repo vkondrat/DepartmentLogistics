@@ -3,6 +3,7 @@ package com.vkondrat.experiment.entities;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 @Entity
