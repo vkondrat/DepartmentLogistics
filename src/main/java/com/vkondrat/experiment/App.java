@@ -33,7 +33,7 @@ public class App {
         get("/test", new Route() {
             @Override
             public Object handle(Request request, Response response) {
-                return "Hello World!";
+                return "Hello World!-1";
             }
         });
 
@@ -43,6 +43,25 @@ public class App {
                 return new CRUDService<Employee>().saveFromJson(request.queryParams("data"), Employee.class);
             }
         });
+
+        get("/check", new Route() {
+            @Override
+            public Object handle(Request request, Response response) {
+                EntityManager em = JPAUtil.getInstance().getEm();
+                em.getTransaction().begin();
+                Query query = em.createQuery("SELECT e FROM Employee e");
+
+                List<Employee> list = (List<Employee>) query.getResultList();
+                for (Employee employee : list) {
+                    System.out.println(employee.getName());
+                }
+                em.close();
+                return "Worked";
+
+            }
+        });
+
+
         get("/addDepartment", new Route() {
             @Override
             public Object handle(Request request, Response response) {
