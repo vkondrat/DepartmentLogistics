@@ -22,6 +22,8 @@ import java.util.List;
 @Path("/rest")
 public class RESTResources {
 
+    /************************************ POST ************************************/
+
     @POST
     @Path("/employees")
     @Consumes("application/json")
@@ -48,6 +50,8 @@ public class RESTResources {
         new CRUDService<Project>().saveFromJson(jsonString, Project.class);
 
     }
+    /************************************ GET ************************************/
+
 
     @GET
     @Path("/employees")
@@ -159,6 +163,8 @@ public class RESTResources {
         }
     }
 
+    /************************************ PUT ************************************/
+
     @PUT
     @Path("/employees")
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -216,7 +222,60 @@ public class RESTResources {
         return project.getName() != null;
     }
 
-    // Testing
+    /************************************ DELETE ************************************/
+
+    @DELETE
+    @Path("/employees/{id}")
+/*    @Produces({ MediaType.TEXT_HTML })*/
+    public void deleteEmployeeById(@PathParam("id") int id) {
+
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = em.find(Employee.class, id);
+        em.remove(employee);
+        em.getTransaction().commit();
+        em.close();
+
+    }
+
+    @DELETE
+    @Path("/departments/{id}")
+/*    @Produces({ MediaType.TEXT_HTML })*/
+    public void deleteDepartmentById(@PathParam("id") int id) {
+
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Department department = em.find(Department.class, id);
+        em.remove(department);
+        em.getTransaction().commit();
+        em.close();
+
+    }
+
+    @DELETE
+    @Path("/projects/{id}")
+/*    @Produces({ MediaType.TEXT_HTML })*/
+    public void deleteProjectById(@PathParam("id") int id) {
+
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Project project = em.find(Project.class, id);
+        em.remove(project);
+        em.getTransaction().commit();
+        em.close();
+
+    }
+
+  /*  @DELETE
+    @Produces({ MediaType.TEXT_HTML })
+    @Transactional
+    public Response deletePodcasts() {
+        podcastDao.deletePodcasts();
+        return Response.status(200)
+                .entity("All podcasts have been successfully removed").build();
+    }
+*/
+    /************************************ TESTING ************************************/
     @GET
     @Path("/test/{name}")
     public String sayHello(@PathParam("name") String name) throws SQLException{
