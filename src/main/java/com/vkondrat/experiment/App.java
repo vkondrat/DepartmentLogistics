@@ -40,7 +40,8 @@ public class App {
         get("/addEmployee", new Route() {
             @Override
             public Object handle(Request request, Response response) {
-                return new CRUDService<Employee>().saveFromJson(request.queryParams("data"), Employee.class);
+              //  return new CRUDService<Employee>().saveFromJson(request.queryParams("data"), Employee.class);
+                return null;
             }
         });
 
@@ -65,13 +66,15 @@ public class App {
         get("/addDepartment", new Route() {
             @Override
             public Object handle(Request request, Response response) {
-                return new CRUDService<Department>().saveFromJson(request.queryParams("data"), Department.class);
+                //return new CRUDService<Department>().saveFromJson(request.queryParams("data"), Department.class);
+                return null;
             }
         });
         get("/addProject", new Route() {
             @Override
             public Object handle(Request request, Response response) {
-                return new CRUDService<Project>().saveFromJson(request.queryParams("data"), Project.class);
+                //return new CRUDService<Project>().saveFromJson(request.queryParams("data"), Project.class);
+                return null;
             }
         });
 

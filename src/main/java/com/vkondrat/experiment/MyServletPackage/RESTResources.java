@@ -9,6 +9,7 @@ import com.vkondrat.experiment.service.CRUDService;
 import com.vkondrat.experiment.util.JPAUtil;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
@@ -30,7 +31,6 @@ public class RESTResources {
 
       //  new DepartmentDao().addEmployee(jsonString);
       //  departmentDao.addEmployee(jsonString);
-      //  System.out.println("Added Employee");
       }
 
     @POST
@@ -86,6 +86,77 @@ public class RESTResources {
         List<Project> listProject = (List<Project>) query.getResultList();
         em.close();
         return listProject;
+    }
+
+    @GET
+    @Path("/employees/{id}")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Employee getEmployeeById(@PathParam("id") int id) {
+
+        try {
+            EntityManager em = JPAUtil.getInstance().getEm();
+            em.getTransaction().begin();
+            String qlString = "SELECT p FROM Employee p WHERE p.id = ?1";
+            TypedQuery<Employee> query = em.createQuery(qlString, Employee.class);
+            query.setParameter(1, id);
+            Employee employee = (Employee) query.getSingleResult();
+            em.close();
+            return employee;
+
+
+            /*if (employee != null) return Response
+                    .status(200)
+                    .entity(employee)
+                    .header("Access-Control-Allow-Headers", "X-extra-header")
+                    .build();
+            else {
+                return Response
+                        .status(404)
+                        .entity("The podcast with the id " + id + " does not exist")
+                        .build();
+            }*/
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/departments/{id}")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Department getDepartmentById(@PathParam("id") int id) {
+
+        try {
+            EntityManager em = JPAUtil.getInstance().getEm();
+            em.getTransaction().begin();
+            String qlString = "SELECT p FROM Department p WHERE p.id = ?1";
+            TypedQuery<Department> query = em.createQuery(qlString, Department.class);
+            query.setParameter(1, id);
+            Department department = (Department) query.getSingleResult();
+            em.close();
+            return department;
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @GET
+    @Path("/projects/{id}")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Project getProjectById(@PathParam("id") int id) {
+
+        try {
+            EntityManager em = JPAUtil.getInstance().getEm();
+            em.getTransaction().begin();
+            String qlString = "SELECT p FROM Project p WHERE p.id = ?1";
+            TypedQuery<Project> query = em.createQuery(qlString, Project.class);
+            query.setParameter(1, id);
+            Project project = (Project) query.getSingleResult();
+            em.close();
+            return project;
+
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     // Testing

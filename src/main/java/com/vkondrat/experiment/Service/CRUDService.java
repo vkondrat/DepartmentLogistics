@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class  CRUDService<T> {
 
-    public String saveFromJson(String json, Class<T> clazz) {
+    public void saveFromJson(String json, Class<T> clazz) {
         Gson gson = new Gson();
         T entity = gson.fromJson(json, clazz);
 
@@ -25,17 +25,10 @@ public class  CRUDService<T> {
         em.getTransaction().begin();
         em.merge(entity);
         em.getTransaction().commit();
-
-        Query query = em.createQuery("SELECT e FROM Employee e");
-
-        List<Employee> list = (List<Employee>) query.getResultList();
-        for (Employee employee : list) {
-            System.out.println(employee.getName());
-        }
-
         em.close();
-        System.out.println(entity.toString());
-        return gson.toJson(entity);
+
+        //System.out.println(entity.toString());
+        // return gson.toJson(entity);
     }
     //  new CRUDService<Employee>().saveFromJson(jsonString, Employee.class);
     //  new CRUDService<Department>().saveFromJson(jsonString, Department.class);
