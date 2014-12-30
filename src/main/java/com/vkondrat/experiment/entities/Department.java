@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by vkondrat on 11/25/14.
  */
+@XmlRootElement
 @Entity
 public class Department {
     private int id;

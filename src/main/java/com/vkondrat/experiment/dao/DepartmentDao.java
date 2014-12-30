@@ -11,7 +11,7 @@ import com.vkondrat.experiment.entities.Project;
  */
 public interface DepartmentDao {
 
-    public void addEmployee(Employee employee);
+    public void addEmployee(String jsonString);
 
     public void updateEmployee(Employee employee);
 
@@ -19,7 +19,7 @@ public interface DepartmentDao {
 
     public List<Employee> findAllEmployees();
 
-    public void addDepartment(Department department);
+    public void addDepartment(String jsonString);
 
     public void updateDepartment(Department department);
 
@@ -27,7 +27,7 @@ public interface DepartmentDao {
 
     public List<Department> findDepartment();
 
-    public void addProject(Project project);
+    public void addProject(String jsonString);
 
     public void updateProject(Project project);
 

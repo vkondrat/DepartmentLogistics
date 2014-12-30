@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  */
-
+@XmlRootElement
 @Entity
 public class Employee {
     private int id;

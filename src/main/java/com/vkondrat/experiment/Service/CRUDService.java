@@ -37,6 +37,10 @@ public class  CRUDService<T> {
         System.out.println(entity.toString());
         return gson.toJson(entity);
     }
+    //  new CRUDService<Employee>().saveFromJson(jsonString, Employee.class);
+    //  new CRUDService<Department>().saveFromJson(jsonString, Department.class);
+    //  new CRUDService<Project>().saveFromJson(jsonString, Project.class);
+
 
     public T loadById(int id, Class<T> clazz) {
         EntityManager em = JPAUtil.getInstance().getEm();
