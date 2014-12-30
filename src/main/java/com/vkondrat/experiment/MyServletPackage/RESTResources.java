@@ -159,6 +159,63 @@ public class RESTResources {
         }
     }
 
+    @PUT
+    @Path("/employees")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Employee updateEmployeeById(String jsonString) {
+        Gson gson = new Gson();
+        Employee employee = gson.fromJson(jsonString, Employee.class);
+        if ((Integer)employee.getId() != null) {
+            new CRUDService<Employee>().update(employee);
+        } else if (employeeCanBeCreated(employee)) {
+            new CRUDService<Employee>().saveFromJson(jsonString, Employee.class);
+        }
+        return employee;
+    }
+
+    private boolean employeeCanBeCreated(Employee employee) {
+        return employee.getName() != null && (Integer) employee.getAge() != null;
+    }
+
+    @PUT
+    @Path("/departments")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Department updateDepartmentById(String jsonString) {
+        Gson gson = new Gson();
+        Department department = gson.fromJson(jsonString, Department.class);
+        if ((Integer)department.getId() != null) {
+            new CRUDService<Department>().update(department);
+        } else if (departmentCanBeCreated(department)) {
+            new CRUDService<Department>().saveFromJson(jsonString, Department.class);
+        }
+        return department;
+    }
+
+    private boolean departmentCanBeCreated(Department department) {
+        return department.getName() != null;
+    }
+
+    @PUT
+    @Path("/projects")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Project updateProjectById(String jsonString) {
+        Gson gson = new Gson();
+        Project project = gson.fromJson(jsonString, Project.class);
+        if ((Integer)project.getId() != null) {
+            new CRUDService<Project>().update(project);
+        } else if (projectCanBeCreated(project)) {
+            new CRUDService<Project>().saveFromJson(jsonString, Project.class);
+        }
+        return project;
+    }
+
+    private boolean projectCanBeCreated(Project project) {
+        return project.getName() != null;
+    }
+
     // Testing
     @GET
     @Path("/test/{name}")
