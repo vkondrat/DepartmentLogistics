@@ -6,6 +6,7 @@ import com.vkondrat.experiment.entities.Department;
 import com.vkondrat.experiment.entities.Employee;
 import com.vkondrat.experiment.entities.Project;
 import com.vkondrat.experiment.service.CRUDService;
+import com.vkondrat.experiment.transport.Assignment;
 import com.vkondrat.experiment.util.JPAUtil;
 
 import javax.persistence.EntityManager;
@@ -266,6 +267,81 @@ public class RESTResources {
 
     }
 
+    /************************************ Assignment ************************************/
+    // {to: 1, what:34}
+
+    @POST
+    @Path("/assign/employee-to-department")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public void assignEmployeeToDepartment(String jsonString) {
+        Gson gson = new Gson();
+        Assignment assignment = gson.fromJson(jsonString, Assignment.class);
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = em.find(Employee.class, assignment.getWhat());
+        Department department = em.find(Department.class, assignment.getTo());
+        department.getEmployeeList().add(employee);
+        employee.setDepartment(department);
+        em.merge(employee);
+        em.merge(department);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    @POST
+    @Path("/assign/department-to-employee")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public void assignDepartmentToEmployee(String jsonString) {
+        Gson gson = new Gson();
+        Assignment assignment = gson.fromJson(jsonString, Assignment.class);
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = em.find(Employee.class, assignment.getTo());
+        Department department = em.find(Department.class, assignment.getWhat());
+        department.getEmployeeList().add(employee);
+        employee.setDepartment(department);
+        em.merge(employee);
+        em.merge(department);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    @POST
+    @Path("/assign/employee-to-project")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public void assignEmployeeToProject(String jsonString) {
+        Gson gson = new Gson();
+        Assignment assignment = gson.fromJson(jsonString, Assignment.class);
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = em.find(Employee.class, assignment.getWhat());
+        Project project = em.find(Project.class, assignment.getTo());
+        project.getEmployeeList().add(employee);
+        employee.getProjectList().add(project);
+        em.merge(employee);
+        em.merge(project);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    @POST
+    @Path("/assign/project-to-employee")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public void assignProjectToEmployee(String jsonString) {
+        Gson gson = new Gson();
+        Assignment assignment = gson.fromJson(jsonString, Assignment.class);
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = em.find(Employee.class, assignment.getTo());
+        Project project = em.find(Project.class, assignment.getWhat());
+        project.getEmployeeList().add(employee);
+        employee.getProjectList().add(project);
+        em.merge(employee);
+        em.merge(project);
+        em.getTransaction().commit();
+        em.close();
+    }
+
   /*  @DELETE
     @Produces({ MediaType.TEXT_HTML })
     @Transactional
@@ -279,7 +355,7 @@ public class RESTResources {
     @GET
     @Path("/test/{name}")
     public String sayHello(@PathParam("name") String name) throws SQLException{
-        StringBuilder stringBuilder = new StringBuilder("Check 25 Hello ");
+        StringBuilder stringBuilder = new StringBuilder("Check 26 Hello ");
         stringBuilder.append(name).append("!");
 
         return stringBuilder.toString();

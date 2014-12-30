@@ -78,7 +78,7 @@ public class App {
             }
         });
 
-        get("/assignEmployeeToDepartment", new Route() {
+     /*   get("/assignEmployeeToDepartment", new Route() {
             @Override
             public Object handle(Request request, Response response) {
                 Gson gson = new Gson();
@@ -94,7 +94,7 @@ public class App {
                 departmentService.update(department);
                 return "OK";
             }
-        });
+        });*/
 
         System.out.println("Finished");
     }

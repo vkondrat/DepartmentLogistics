@@ -3,12 +3,17 @@ package com.vkondrat.experiment.entities;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class Project {
     private int id;
+    @XmlTransient
     private List<Employee> employeeList;
     private String name;
     private Date StartDate;

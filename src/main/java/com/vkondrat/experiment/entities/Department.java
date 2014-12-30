@@ -1,19 +1,24 @@
 package com.vkondrat.experiment.entities;
 
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
+
 import javax.persistence.*;
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 
 
 /**
  * Created by vkondrat on 11/25/14.
  */
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class Department {
     private int id;
 
+    @XmlTransient
     private List<Employee> employeeList;
+
     private String name;
 
     public Department() {
