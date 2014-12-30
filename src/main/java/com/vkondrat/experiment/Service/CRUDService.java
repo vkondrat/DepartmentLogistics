@@ -20,7 +20,7 @@ public class  CRUDService<T> {
     public void saveFromJson(String json, Class<T> clazz) {
         Gson gson = new Gson();
         T entity = gson.fromJson(json, clazz);
-
+        
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
         em.merge(entity);

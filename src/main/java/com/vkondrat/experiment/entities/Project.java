@@ -1,6 +1,9 @@
 package com.vkondrat.experiment.entities;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -16,24 +19,35 @@ public class Project {
     @XmlTransient
     private List<Employee> employeeList;
     private String name;
-    private Date StartDate;
-    private Date EndDate;
+    private String startDate;
+    private String endDate;
+
+  /*   private Date startDate;
+     private Date endDate;*/
 
     public Project() {
     }
 
-    public Project(List<Employee> employeeList, String name, Date startDate, Date endDate) {
+    public Project(List<Employee> employeeList, String name, String startDate, String endDate) throws ParseException {
         this.employeeList = employeeList;
         this.name = name;
-        StartDate = startDate;
-        EndDate = endDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    public Project(List<Employee> employeeList, String name) {
+  /*  public Project(List<Employee> employeeList, String name, String stDate, String eDate) throws ParseException {
+        this.employeeList = employeeList;
+        this.name = name;
+        DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+        this.startDate = formatter.parse(stDate);
+        this.endDate = formatter.parse(eDate);
+    }
+*/
+   /* public Project(List<Employee> employeeList, String name) {
         this.employeeList = employeeList;
         this.name = name;
     }
-
+*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
@@ -61,19 +75,37 @@ public class Project {
         this.name = name;
     }
 
-    public Date getStartDate() {
-        return StartDate;
+    public String getStartDate() { return startDate; }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+
+ /*   public Date getStartDate() { return startDate; }
+
     public void setStartDate(Date startDate) {
-        StartDate = startDate;
+        this.startDate = startDate;
     }
 
     public Date getEndDate() {
-        return EndDate;
+        return endDate;
     }
 
     public void setEndDate(Date endDate) {
-        EndDate = endDate;
-    }
+        this.endDate = endDate;
+    }*/
 }
+/*public void setStartDate(String startDate) throws ParseException{
+        DateFormat formatter;
+        formatter = new SimpleDateFormat("MM/dd/yyyy");
+        this.StartDate = (Date)formatter.parse(startDate);
+        }*/
