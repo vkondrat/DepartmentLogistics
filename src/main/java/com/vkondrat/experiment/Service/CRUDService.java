@@ -8,6 +8,7 @@ import com.vkondrat.experiment.entities.Common;
 import com.vkondrat.experiment.entities.Department;
 import com.vkondrat.experiment.entities.Employee;
 import com.vkondrat.experiment.entities.Project;
+import com.vkondrat.experiment.transport.Assignment;
 import com.vkondrat.experiment.util.JPAUtil;
 
 import javax.persistence.EntityManager;
@@ -35,6 +36,18 @@ public class  CRUDService<T> {
         em.getTransaction().commit();
         em.close();
     }
+    public T findEntity(int entityId, Class<T> clazz)
+    {
+        try {
+            EntityManager em = JPAUtil.getInstance().getEm();
+            em.getTransaction().begin();
+            T entity = em.find(clazz, entityId);
+            return entity;
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 
     public T getEntityFromJson(String json, Class<T> clazz) {
         Gson gson = new Gson();

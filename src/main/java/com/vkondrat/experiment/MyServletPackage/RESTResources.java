@@ -1,7 +1,6 @@
 package com.vkondrat.experiment.myServletPackage;
 import com.google.gson.Gson;
 import com.sun.jersey.spi.container.servlet.PerSession;
-import com.vkondrat.experiment.dao.DepartmentDao;
 import com.vkondrat.experiment.entities.Department;
 import com.vkondrat.experiment.entities.Employee;
 import com.vkondrat.experiment.entities.Project;
@@ -49,6 +48,106 @@ public class RESTResources {
     }
     /************************************ GET ************************************/
 
+    @GET
+    @Path("/employees/{id}")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Employee getEmployeeById(@PathParam("id") int id) {
+        return new CRUDService<Employee>().findEntity(id, Employee.class);
+    }
+
+    @GET
+    @Path("/departments/{id}")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Department getDepartmentById(@PathParam("id") int id) {
+        return new CRUDService<Department>().findEntity(id, Department.class);
+    }
+
+    @GET
+    @Path("/projects/{id}")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Project getProjectById(@PathParam("id") int id) {
+        return new CRUDService<Project>().findEntity(id, Project.class);
+    }
+
+
+    /************************************ DELETE ************************************/
+
+    @DELETE
+    @Path("/employees/{id}")
+    public void deleteEmployeeById(@PathParam("id") int id) {
+
+        new CRUDService<Employee>().deleteEntity(id, Employee.class);
+
+    }
+
+    @DELETE
+    @Path("/departments/{id}")
+    public void deleteDepartmentById(@PathParam("id") int id) {
+        new CRUDService<Department>().deleteEntity(id, Department.class);
+    }
+
+    @DELETE
+    @Path("/projects/{id}")
+    public void deleteProjectById(@PathParam("id") int id) {
+        new CRUDService<Project>().deleteEntity(id, Project.class);
+    }
+
+
+    /************************************ PUT ************************************/
+
+    @PUT
+    @Path("/employees")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public void updateEmployeeById(String jsonString) {
+        Gson gson = new Gson();
+        Employee employee = gson.fromJson(jsonString, Employee.class);
+        if ((Integer)employee.getId() != null) {
+            new CRUDService<Employee>().updateDB(employee);
+        } else if (employeeCanBeCreated(employee)) {
+            new CRUDService<Employee>().addEntity(jsonString, Employee.class);
+        }
+    }
+
+    private boolean employeeCanBeCreated(Employee employee) {
+        return employee.getName() != null && (Integer) employee.getAge() != null;
+    }
+
+    @PUT
+    @Path("/departments")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public void updateDepartmentById(String jsonString) {
+        Gson gson = new Gson();
+        Department department = gson.fromJson(jsonString, Department.class);
+        if ((Integer)department.getId() != null) {
+            new CRUDService<Department>().updateDB(department);
+        } else if (departmentCanBeCreated(department)) {
+            new CRUDService<Department>().addEntity(jsonString, Department.class);
+        }
+    }
+
+    private boolean departmentCanBeCreated(Department department) {
+        return department.getName() != null;
+    }
+
+    @PUT
+    @Path("/projects")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public void updateProjectById(String jsonString) {
+        Gson gson = new Gson();
+        Project project = gson.fromJson(jsonString, Project.class);
+        if ((Integer)project.getId() != null) {
+            new CRUDService<Project>().updateDB(project);
+        } else if (projectCanBeCreated(project)) {
+            new CRUDService<Project>().addEntity(jsonString, Project.class);
+        }
+    }
+
+    private boolean projectCanBeCreated(Project project) {
+        return project.getName() != null;
+    }
+
+    /************************************ GET ************************************/
+
 
     @GET
     @Path("/employees")
@@ -89,151 +188,7 @@ public class RESTResources {
         return listProject;
     }
 
-    @GET
-    @Path("/employees/{id}")
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Employee getEmployeeById(@PathParam("id") int id) {
-
-        try {
-            EntityManager em = JPAUtil.getInstance().getEm();
-            em.getTransaction().begin();
-            String qlString = "SELECT p FROM Employee p WHERE p.id = ?1";
-            TypedQuery<Employee> query = em.createQuery(qlString, Employee.class);
-            query.setParameter(1, id);
-            Employee employee = (Employee) query.getSingleResult();
-            em.close();
-            return employee;
-
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    @GET
-    @Path("/departments/{id}")
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Department getDepartmentById(@PathParam("id") int id) {
-
-        try {
-            EntityManager em = JPAUtil.getInstance().getEm();
-            em.getTransaction().begin();
-            String qlString = "SELECT p FROM Department p WHERE p.id = ?1";
-            TypedQuery<Department> query = em.createQuery(qlString, Department.class);
-            query.setParameter(1, id);
-            Department department = (Department) query.getSingleResult();
-            em.close();
-            return department;
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    @GET
-    @Path("/projects/{id}")
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Project getProjectById(@PathParam("id") int id) {
-
-        try {
-            EntityManager em = JPAUtil.getInstance().getEm();
-            em.getTransaction().begin();
-            String qlString = "SELECT p FROM Project p WHERE p.id = ?1";
-            TypedQuery<Project> query = em.createQuery(qlString, Project.class);
-            query.setParameter(1, id);
-            Project project = (Project) query.getSingleResult();
-            em.close();
-            return project;
-
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    /************************************ PUT ************************************/
-
-    @PUT
-    @Path("/employees")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Employee updateEmployeeById(String jsonString) {
-        Gson gson = new Gson();
-        Employee employee = gson.fromJson(jsonString, Employee.class);
-        if ((Integer)employee.getId() != null) {
-            new CRUDService<Employee>().updateDB(employee);
-        } else if (employeeCanBeCreated(employee)) {
-            new CRUDService<Employee>().addEntity(jsonString, Employee.class);
-        }
-        return employee;
-    }
-
-    private boolean employeeCanBeCreated(Employee employee) {
-        return employee.getName() != null && (Integer) employee.getAge() != null;
-    }
-
-    @PUT
-    @Path("/departments")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Department updateDepartmentById(String jsonString) {
-        Gson gson = new Gson();
-        Department department = gson.fromJson(jsonString, Department.class);
-        if ((Integer)department.getId() != null) {
-            new CRUDService<Department>().updateDB(department);
-        } else if (departmentCanBeCreated(department)) {
-            new CRUDService<Department>().addEntity(jsonString, Department.class);
-        }
-        return department;
-    }
-
-    private boolean departmentCanBeCreated(Department department) {
-        return department.getName() != null;
-    }
-
-    @PUT
-    @Path("/projects")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Project updateProjectById(String jsonString) {
-        Gson gson = new Gson();
-        Project project = gson.fromJson(jsonString, Project.class);
-        if ((Integer)project.getId() != null) {
-            new CRUDService<Project>().updateDB(project);
-        } else if (projectCanBeCreated(project)) {
-            new CRUDService<Project>().addEntity(jsonString, Project.class);
-        }
-        return project;
-    }
-
-    private boolean projectCanBeCreated(Project project) {
-        return project.getName() != null;
-    }
-
-    /************************************ DELETE ************************************/
-
-    @DELETE
-    @Path("/employees/{id}")
-/*    @Produces({ MediaType.TEXT_HTML })*/
-    public void deleteEmployeeById(@PathParam("id") int id) {
-
-       new CRUDService<Employee>().deleteEntity(id, Employee.class);
-
-    }
-
-    @DELETE
-    @Path("/departments/{id}")
-/*    @Produces({ MediaType.TEXT_HTML })*/
-    public void deleteDepartmentById(@PathParam("id") int id) {
-        new CRUDService<Department>().deleteEntity(id, Department.class);
-    }
-
-    @DELETE
-    @Path("/projects/{id}")
-/*    @Produces({ MediaType.TEXT_HTML })*/
-    public void deleteProjectById(@PathParam("id") int id) {
-        new CRUDService<Project>().deleteEntity(id, Project.class);
-    }
-
     /************************************ Assignment ************************************/
-    // {to: 1, what:34}
 
     @POST
     @Path("/assign/employee-to-department")
