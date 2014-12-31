@@ -12,12 +12,19 @@ How to run:
 - Start an Application Server, Open REST Client 
 
 Examples of HTTP requests:
+
 1) Add an entity (POST)
+
 http://localhost:8080/test-project/rest/employees
+
 JSON: {"name":"Vlad", "age":27}
+
 http://localhost:8080/test-project/rest/departments
+
 JSON: {"name":"Mathematics"}
+
 http://localhost:8080/test-project/rest/projects
+
 JSON: {"name":"Calculus","startDate":"10-10-1990", "endDate":"1-1-1999"}
 
 2) Find all entities (GET)
@@ -31,6 +38,7 @@ http://localhost:8080/test-project/rest/employees/Id (D,P)
 4) Update an entity or add if it's Id is unique (PUT)
 
 http://localhost:8080/test-project/rest/employees/Id (D,P)
+
 JSON: {"id":1, "name":"Vlad","age":27}
 
 5) Delete an entity by Id (DELETE)
@@ -40,7 +48,9 @@ http://localhost:8080/test-project/rest/employees/Id (D,P)
 6) Assign the relationship between entities (E one-to-many D; E many-to-many P) (POST)
 
 http://localhost:8080/test-project/rest/assign/employee-to-department
+
 (department-to-employee/employee-to-project/project-to-employee)
+
 JSON: {"to":1,"what":1}
 
 Task:
