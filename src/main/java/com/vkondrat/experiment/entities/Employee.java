@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class Employee {
+public class Employee implements Common {
     private int id;
     @XmlTransient
     private List<Project> projectList;
@@ -29,7 +29,7 @@ public class Employee {
     else return null;*/
 
 
-    public Employee() {
+    public Employee(){
     }
 
     public Employee(String name, int age) {

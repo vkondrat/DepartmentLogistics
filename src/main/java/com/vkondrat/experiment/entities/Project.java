@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class Project {
+public class Project implements Common{
     private int id;
     @XmlTransient
     private List<Employee> employeeList;

@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class Department {
+public class Department implements Common{
     private int id;
 
     @XmlTransient

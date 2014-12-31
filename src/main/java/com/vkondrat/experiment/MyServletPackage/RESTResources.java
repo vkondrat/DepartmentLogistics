@@ -30,10 +30,7 @@ public class RESTResources {
     @Consumes("application/json")
 
     public void addEmployee(String jsonString) throws SQLException {
-        new CRUDService<Employee>().saveFromJson(jsonString, Employee.class);
-
-      //  new DepartmentDao().addEmployee(jsonString);
-      //  departmentDao.addEmployee(jsonString);
+        new CRUDService<Employee>().addEntity(jsonString, Employee.class);
       }
 
     @POST
@@ -41,15 +38,14 @@ public class RESTResources {
     @Consumes("application/json")
 
     public void addDepartment(String jsonString) throws SQLException {
-        new CRUDService<Department>().saveFromJson(jsonString, Department.class);
+        new CRUDService<Department>().addEntity(jsonString, Department.class);
          }
     @POST
     @Path("/projects")
     @Consumes("application/json")
 
     public void addProject(String jsonString) throws SQLException {
-        new CRUDService<Project>().saveFromJson(jsonString, Project.class);
-
+        new CRUDService<Project>().addEntity(jsonString, Project.class);
     }
     /************************************ GET ************************************/
 
@@ -108,18 +104,6 @@ public class RESTResources {
             em.close();
             return employee;
 
-
-            /*if (employee != null) return Response
-                    .status(200)
-                    .entity(employee)
-                    .header("Access-Control-Allow-Headers", "X-extra-header")
-                    .build();
-            else {
-                return Response
-                        .status(404)
-                        .entity("The podcast with the id " + id + " does not exist")
-                        .build();
-            }*/
         } catch (NoResultException e) {
             return null;
         }
@@ -174,9 +158,9 @@ public class RESTResources {
         Gson gson = new Gson();
         Employee employee = gson.fromJson(jsonString, Employee.class);
         if ((Integer)employee.getId() != null) {
-            new CRUDService<Employee>().update(employee);
+            new CRUDService<Employee>().updateDB(employee);
         } else if (employeeCanBeCreated(employee)) {
-            new CRUDService<Employee>().saveFromJson(jsonString, Employee.class);
+            new CRUDService<Employee>().addEntity(jsonString, Employee.class);
         }
         return employee;
     }
@@ -193,9 +177,9 @@ public class RESTResources {
         Gson gson = new Gson();
         Department department = gson.fromJson(jsonString, Department.class);
         if ((Integer)department.getId() != null) {
-            new CRUDService<Department>().update(department);
+            new CRUDService<Department>().updateDB(department);
         } else if (departmentCanBeCreated(department)) {
-            new CRUDService<Department>().saveFromJson(jsonString, Department.class);
+            new CRUDService<Department>().addEntity(jsonString, Department.class);
         }
         return department;
     }
@@ -212,9 +196,9 @@ public class RESTResources {
         Gson gson = new Gson();
         Project project = gson.fromJson(jsonString, Project.class);
         if ((Integer)project.getId() != null) {
-            new CRUDService<Project>().update(project);
+            new CRUDService<Project>().updateDB(project);
         } else if (projectCanBeCreated(project)) {
-            new CRUDService<Project>().saveFromJson(jsonString, Project.class);
+            new CRUDService<Project>().addEntity(jsonString, Project.class);
         }
         return project;
     }
@@ -230,12 +214,7 @@ public class RESTResources {
 /*    @Produces({ MediaType.TEXT_HTML })*/
     public void deleteEmployeeById(@PathParam("id") int id) {
 
-        EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
-        Employee employee = em.find(Employee.class, id);
-        em.remove(employee);
-        em.getTransaction().commit();
-        em.close();
+       new CRUDService<Employee>().deleteEntity(id, Employee.class);
 
     }
 
@@ -243,28 +222,14 @@ public class RESTResources {
     @Path("/departments/{id}")
 /*    @Produces({ MediaType.TEXT_HTML })*/
     public void deleteDepartmentById(@PathParam("id") int id) {
-
-        EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
-        Department department = em.find(Department.class, id);
-        em.remove(department);
-        em.getTransaction().commit();
-        em.close();
-
+        new CRUDService<Department>().deleteEntity(id, Department.class);
     }
 
     @DELETE
     @Path("/projects/{id}")
 /*    @Produces({ MediaType.TEXT_HTML })*/
     public void deleteProjectById(@PathParam("id") int id) {
-
-        EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
-        Project project = em.find(Project.class, id);
-        em.remove(project);
-        em.getTransaction().commit();
-        em.close();
-
+        new CRUDService<Project>().deleteEntity(id, Project.class);
     }
 
     /************************************ Assignment ************************************/
