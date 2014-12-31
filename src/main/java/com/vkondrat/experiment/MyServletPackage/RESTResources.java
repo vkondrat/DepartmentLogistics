@@ -7,14 +7,10 @@ import com.vkondrat.experiment.entities.Project;
 import com.vkondrat.experiment.service.CRUDService;
 import com.vkondrat.experiment.transport.Assignment;
 import com.vkondrat.experiment.util.JPAUtil;
-
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -146,7 +142,7 @@ public class RESTResources {
         return project.getName() != null;
     }
 
-    /************************************ GET ************************************/
+    /************************************ GET ALL ************************************/
 
 
     @GET
@@ -262,15 +258,7 @@ public class RESTResources {
         em.close();
     }
 
-  /*  @DELETE
-    @Produces({ MediaType.TEXT_HTML })
-    @Transactional
-    public Response deletePodcasts() {
-        podcastDao.deletePodcasts();
-        return Response.status(200)
-                .entity("All podcasts have been successfully removed").build();
-    }
-*/
+
     /************************************ TESTING ************************************/
     @GET
     @Path("/test/{name}")

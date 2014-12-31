@@ -2,10 +2,6 @@ package com.vkondrat.experiment.transport;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by vkondrat on 12/18/14.
- */
-
 public class Assignment {
     private int to;
     private int what;

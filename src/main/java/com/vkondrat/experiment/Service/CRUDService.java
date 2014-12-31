@@ -1,29 +1,17 @@
 package com.vkondrat.experiment.service;
 
-/**
- * Created by vkondrat on 12/18/14.
- */
 import com.google.gson.Gson;
-import com.vkondrat.experiment.entities.Common;
-import com.vkondrat.experiment.entities.Department;
-import com.vkondrat.experiment.entities.Employee;
-import com.vkondrat.experiment.entities.Project;
-import com.vkondrat.experiment.transport.Assignment;
+
 import com.vkondrat.experiment.util.JPAUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import java.util.List;
 
-/**
- */
 public class  CRUDService<T> {
 
     public void addEntity(String json, Class<T> clazz)
     {
-        T entity = getEntityFromJson(json, clazz); //new CRUDService<T>().
+        T entity = getEntityFromJson(json, clazz);
         updateDB(entity);
     }
 

@@ -22,9 +22,6 @@ public class Project implements Common{
     private String startDate;
     private String endDate;
 
-  /*   private Date startDate;
-     private Date endDate;*/
-
     public Project() {
     }
 
@@ -35,19 +32,6 @@ public class Project implements Common{
         this.endDate = endDate;
     }
 
-  /*  public Project(List<Employee> employeeList, String name, String stDate, String eDate) throws ParseException {
-        this.employeeList = employeeList;
-        this.name = name;
-        DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
-        this.startDate = formatter.parse(stDate);
-        this.endDate = formatter.parse(eDate);
-    }
-*/
-   /* public Project(List<Employee> employeeList, String name) {
-        this.employeeList = employeeList;
-        this.name = name;
-    }
-*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
@@ -109,3 +93,18 @@ public class Project implements Common{
         formatter = new SimpleDateFormat("MM/dd/yyyy");
         this.StartDate = (Date)formatter.parse(startDate);
         }*/
+
+
+  /*  public Project(List<Employee> employeeList, String name, String stDate, String eDate) throws ParseException {
+        this.employeeList = employeeList;
+        this.name = name;
+        DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+        this.startDate = formatter.parse(stDate);
+        this.endDate = formatter.parse(eDate);
+    }
+*/
+   /* public Project(List<Employee> employeeList, String name) {
+        this.employeeList = employeeList;
+        this.name = name;
+    }
+*/

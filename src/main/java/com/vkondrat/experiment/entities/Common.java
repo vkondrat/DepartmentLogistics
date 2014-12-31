@@ -11,3 +11,4 @@ public interface Common {
     public void setName(String name);
 
 }
+// public class Employee implements Common {
