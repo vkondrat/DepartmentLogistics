@@ -1,5 +1,7 @@
 package com.vkondrat.experiment.entities;
 
+import com.vkondrat.experiment.util.JPAUtil;
+
 import javax.persistence.*;
 import java.util.List;
 import javax.xml.bind.annotation.*;
@@ -19,6 +21,7 @@ public class Employee {
 
     @XmlTransient
     private Department department;
+    private int departmentID;
 
     public Employee(){
     }
@@ -35,6 +38,13 @@ public class Employee {
         this.projectList = projectList;
     }
 
+    public Employee(String name, int age, List<Project> projectList, int departmentID) {
+        this.name = name;
+        this.age = age;
+        this.projectList = projectList;
+        this.departmentID = departmentID;
+        setDepartment(departmentID);
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
@@ -68,6 +78,47 @@ public class Employee {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public void setDepartment(int departmentID)
+    {
+        if (departmentID!=0)
+            try {
+                EntityManager em = JPAUtil.getInstance().getEm();
+                em.getTransaction().begin();
+                Department entity = em.find(Department.class, departmentID);
+                this.department = entity;
+            } catch (NoResultException e) {
+                this.department=null;
+            }
+    }
+
+    public void setDepartment()
+    {
+        if (departmentID!=0)
+            try {
+                EntityManager em = JPAUtil.getInstance().getEm();
+                em.getTransaction().begin();
+                Department entity = em.find(Department.class, departmentID);
+                this.department = entity;
+            } catch (NoResultException e) {
+                this.department=null;
+            }
+    }
+
+    public int getDepartmentID() {
+        return this.departmentID;
+    }
+
+    /*  public int getDepartmentID() {
+        if (department!=null)
+            return this.department.getId();
+        else
+            return 0;
+    }*/
+
+    public void setDepartmentID(int departmentID) {
+        this.departmentID = departmentID;
     }
 
     @ManyToMany(mappedBy = "employeeList")
