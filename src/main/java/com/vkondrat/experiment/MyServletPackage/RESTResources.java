@@ -92,16 +92,21 @@ public class RESTResources {
     /************************************ PUT ************************************/
 
     @PUT
-    @Path("/employees")
+    @Path("/employees/{id}")
     @Consumes({ MediaType.APPLICATION_JSON })
-    public void updateEmployeeById(String jsonString) {
+    public void updateEmployeeById(String jsonString, @PathParam("id") int id) {
         Gson gson = new Gson();
+
         Employee employee = gson.fromJson(jsonString, Employee.class);
-        if ((Integer)employee.getId() != null) {
+        employee.setId(id);
+
+        new CRUDService<Employee>().updateDB(employee);
+
+     /*   if ((Integer)employee.getId() != null) {
             new CRUDService<Employee>().updateDB(employee);
         } else if (employeeCanBeCreated(employee)) {
             new CRUDService<Employee>().addEntity(jsonString, Employee.class);
-        }
+        }*/
     }
 
     private boolean employeeCanBeCreated(Employee employee) {
