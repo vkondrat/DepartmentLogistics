@@ -10,8 +10,10 @@ import javax.xml.bind.annotation.*;
 @Entity
 public class Employee {
     private int id;
+
     @XmlTransient
     private List<Project> projectList;
+
     private String name;
     private int age;
 

@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import java.sql.SQLException;
 import java.util.List;
 
+
 @PerSession
 @Path("/rest")
 public class RESTResources {
@@ -101,12 +102,6 @@ public class RESTResources {
         employee.setId(id);
 
         new CRUDService<Employee>().updateDB(employee);
-
-     /*   if ((Integer)employee.getId() != null) {
-            new CRUDService<Employee>().updateDB(employee);
-        } else if (employeeCanBeCreated(employee)) {
-            new CRUDService<Employee>().addEntity(jsonString, Employee.class);
-        }*/
     }
 
     private boolean employeeCanBeCreated(Employee employee) {
@@ -153,40 +148,43 @@ public class RESTResources {
     @GET
     @Path("/employees")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public List<Employee> getEmployees() {
+    public Object getEmployees() {
+        Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
         String qlString = "SELECT p FROM Employee p";
         TypedQuery<Employee> query = em.createQuery(qlString, Employee.class);
         List<Employee> listEmployee = (List<Employee>) query.getResultList();
         em.close();
-        return listEmployee;
+        return gson.toJson(listEmployee.toArray());
     }
 
     @GET
     @Path("/departments")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public List<Department> getDepartments() {
+    public Object getDepartments() {
+        Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
         String qlString = "SELECT p FROM Department p";
         TypedQuery<Department> query = em.createQuery(qlString, Department.class);
         List<Department> listDepartment = (List<Department>) query.getResultList();
         em.close();
-        return listDepartment;
+        return gson.toJson(listDepartment.toArray());
     }
 
     @GET
     @Path("/projects")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public List<Project> getProject() {
+    public Object getProject() {
+        Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
         String qlString = "SELECT p FROM Project p";
         TypedQuery<Project> query = em.createQuery(qlString, Project.class);
         List<Project> listProject = (List<Project>) query.getResultList();
         em.close();
-        return listProject;
+        return gson.toJson(listProject.toArray());
     }
 
     /************************************ Assignment ************************************/
@@ -268,7 +266,7 @@ public class RESTResources {
     @GET
     @Path("/test/{name}")
     public String sayHello(@PathParam("name") String name) throws SQLException{
-        StringBuilder stringBuilder = new StringBuilder("Check 26 Hello ");
+        StringBuilder stringBuilder = new StringBuilder("Check 28 Hello ");
         stringBuilder.append(name).append("!");
 
         return stringBuilder.toString();

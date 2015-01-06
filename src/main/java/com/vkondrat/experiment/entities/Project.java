@@ -18,6 +18,7 @@ public class Project {
     private int id;
     @XmlTransient
     private List<Employee> employeeList;
+
     private String name;
     private String startDate;
     private String endDate;
