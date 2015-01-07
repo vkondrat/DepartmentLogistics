@@ -104,42 +104,26 @@ public class RESTResources {
         new CRUDService<Employee>().updateDB(employee);
     }
 
-    private boolean employeeCanBeCreated(Employee employee) {
-        return employee.getName() != null && (Integer) employee.getAge() != null;
-    }
-
     @PUT
-    @Path("/departments")
+    @Path("/departments/{id}")
     @Consumes({ MediaType.APPLICATION_JSON })
-    public void updateDepartmentById(String jsonString) {
+    public void updateDepartmentById(String jsonString, @PathParam("id") int id) {
         Gson gson = new Gson();
         Department department = gson.fromJson(jsonString, Department.class);
-        if ((Integer)department.getId() != null) {
-            new CRUDService<Department>().updateDB(department);
-        } else if (departmentCanBeCreated(department)) {
-            new CRUDService<Department>().addEntity(jsonString, Department.class);
-        }
-    }
+        department.setId(id);
 
-    private boolean departmentCanBeCreated(Department department) {
-        return department.getName() != null;
+        new CRUDService<Department>().updateDB(department);
     }
 
     @PUT
-    @Path("/projects")
+    @Path("/projects/{id}")
     @Consumes({ MediaType.APPLICATION_JSON })
-    public void updateProjectById(String jsonString) {
+    public void updateProjectById(String jsonString, @PathParam("id") int id) {
         Gson gson = new Gson();
         Project project = gson.fromJson(jsonString, Project.class);
-        if ((Integer)project.getId() != null) {
-            new CRUDService<Project>().updateDB(project);
-        } else if (projectCanBeCreated(project)) {
-            new CRUDService<Project>().addEntity(jsonString, Project.class);
-        }
-    }
+        project.setId(id);
 
-    private boolean projectCanBeCreated(Project project) {
-        return project.getName() != null;
+        new CRUDService<Project>().updateDB(project);
     }
 
     /************************************ GET ALL ************************************/
