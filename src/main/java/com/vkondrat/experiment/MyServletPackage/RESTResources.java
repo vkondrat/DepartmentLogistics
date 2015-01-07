@@ -177,13 +177,36 @@ public class RESTResources {
     @GET
     @Path("/department/{id}/employee")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Object getEmployeesByDepartment(String jsonString, @PathParam("id") int id) {
-      //  Gson gson = new Gson();
+    public Object getEmployeesByDepartment(@PathParam("id") int id) {
+
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
         Department department = new CRUDService<Department>().findEntity(id, Department.class);
         em.close();
         return department.getEmployeeList();
+    }
+
+    @GET
+    @Path("/project/{id}/employee")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Object getEmployeesByProject(@PathParam("id") int id) {
+
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Project project = new CRUDService<Project>().findEntity(id, Project.class);
+        em.close();
+        return project.getEmployeeList();
+    }
+
+    @GET
+    @Path("/employee/{id}/project")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Object getProjectsByEmployee(@PathParam("id") int id) {
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = new CRUDService<Employee>().findEntity(id, Employee.class);
+        em.close();
+        return employee.getProjectList();
     }
     // Not updated the employees list Error 500
 
@@ -259,6 +282,7 @@ public class RESTResources {
 
     // Can I just call assignEmployeeToProjectThroughId(int projectId, int employeeId)
     // How to check if I got the connection
+    //Delete all employees after the Department got deleted
 
     @POST
     @Path("/assign/employee-to-project")
