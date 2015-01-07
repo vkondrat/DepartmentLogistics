@@ -171,6 +171,22 @@ public class RESTResources {
         return gson.toJson(listProject.toArray());
     }
 
+    /************************************ GET ALL Employees by Department.ID ************************************/
+
+
+    @GET
+    @Path("/department/{id}/employee")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Object getEmployeesByDepartment(String jsonString, @PathParam("id") int id) {
+      //  Gson gson = new Gson();
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Department department = new CRUDService<Department>().findEntity(id, Department.class);
+        em.close();
+        return department.getEmployeeList();
+    }
+    // Not updated the employees list Error 500
+
     /************************************ Assignment ************************************/
 
     @POST
@@ -208,6 +224,41 @@ public class RESTResources {
         em.getTransaction().commit();
         em.close();
     }
+
+    @POST
+    @Path("/employee/{employeeId}/project/{projectId}")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public void assignEmployeeToProjectThroughId(int employeeId, int projectId) {
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = em.find(Employee.class, employeeId);
+        Project project = em.find(Project.class, projectId);
+        project.getEmployeeList().add(employee);
+        employee.getProjectList().add(project);
+        em.merge(employee);
+        em.merge(project);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    @POST
+    @Path("/project/{projectId}/employee/{employeeId}")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public void assignProjectToEmployeeThroughId(int projectId, int employeeId) {
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = em.find(Employee.class, employeeId);
+        Project project = em.find(Project.class, projectId);
+        project.getEmployeeList().add(employee);
+        employee.getProjectList().add(project);
+        em.merge(employee);
+        em.merge(project);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    // Can I just call assignEmployeeToProjectThroughId(int projectId, int employeeId)
+    // How to check if I got the connection
 
     @POST
     @Path("/assign/employee-to-project")
