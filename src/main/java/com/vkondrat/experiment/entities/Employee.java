@@ -21,7 +21,10 @@ public class Employee {
 
     @XmlTransient
     private Department department;
+    @XmlTransient
     private int departmentID;
+
+    private String departmentName;
 
     public Employee(){
     }
@@ -44,6 +47,7 @@ public class Employee {
         this.projectList = projectList;
         this.departmentID = departmentID;
         setDepartment(departmentID);
+        this.departmentName=department.getName();
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,9 +91,9 @@ public class Employee {
                 EntityManager em = JPAUtil.getInstance().getEm();
                 em.getTransaction().begin();
                 Department entity = em.find(Department.class, departmentID);
-                this.department = entity;
+                department = entity;
             } catch (NoResultException e) {
-                this.department=null;
+                department=null;
             }
     }
 
@@ -100,22 +104,26 @@ public class Employee {
                 EntityManager em = JPAUtil.getInstance().getEm();
                 em.getTransaction().begin();
                 Department entity = em.find(Department.class, departmentID);
-                this.department = entity;
+                department = entity;
             } catch (NoResultException e) {
-                this.department=null;
+                department=null;
             }
     }
 
     public int getDepartmentID() {
-        return this.departmentID;
+        return departmentID;
     }
 
-    /*  public int getDepartmentID() {
+    public String getDepartmentName() {
         if (department!=null)
-            return this.department.getId();
+            return department.getName();
         else
-            return 0;
-    }*/
+            return "No Department";
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
 
     public void setDepartmentID(int departmentID) {
         this.departmentID = departmentID;
@@ -129,7 +137,6 @@ public class Employee {
     public void setProjectList(List<Project> projectList) {
         this.projectList = projectList;
     }
-
 }
 
 
@@ -139,3 +146,10 @@ public class Employee {
     if department!=null
     return department.getID
     else return null;*/
+
+    /*  public int getDepartmentID() {
+        if (department!=null)
+            return this.department.getId();
+        else
+            return 0;
+    }*/
