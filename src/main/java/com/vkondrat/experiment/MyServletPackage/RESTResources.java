@@ -116,6 +116,18 @@ public class RESTResources {
         Employee employee = gson.fromJson(jsonString, Employee.class);
         employee.setId(id);
 
+        if (employee.getDepartmentId()!=0){
+
+            EntityManager em = JPAUtil.getInstance().getEm();
+            em.getTransaction().begin();
+            Department department = em.find(Department.class, employee.getDepartmentId());
+            department.getEmployeeList().add(employee);
+            employee.setDepartment(department);
+            em.merge(department);
+            em.getTransaction().commit();
+            em.close();
+        }
+
         new CRUDService<Employee>().updateDB(employee);
     }
 
