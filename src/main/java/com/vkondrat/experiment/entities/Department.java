@@ -11,8 +11,7 @@ import javax.xml.bind.annotation.*;
   public class Department{
     private int id;
 
-    @XmlTransient
-    private List<Employee> employeeList;
+    private transient List<Employee> employeeList;
 
     private String name;
 

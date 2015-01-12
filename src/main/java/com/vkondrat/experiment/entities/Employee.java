@@ -13,18 +13,15 @@ import javax.xml.bind.annotation.*;
 public class Employee {
     private int id;
 
-    @XmlTransient
-    private List<Project> projectList;
+    private transient List<Project> projectList;
 
     private String name;
     private int age;
 
-    @XmlTransient
-    private Department department;
-    @XmlTransient
-    private int departmentID;
 
-    private String departmentName;
+    private transient Department department;
+    private int departmentId;
+
 
     public Employee(){
     }
@@ -41,13 +38,11 @@ public class Employee {
         this.projectList = projectList;
     }
 
-    public Employee(String name, int age, List<Project> projectList, int departmentID) {
+    public Employee(String name, int age, List<Project> projectList, int departmentId) {
         this.name = name;
         this.age = age;
         this.projectList = projectList;
-        this.departmentID = departmentID;
-        setDepartment(departmentID);
-        this.departmentName=department.getName();
+        this.departmentId = departmentId;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,6 +70,14 @@ public class Employee {
         this.age = age;
     }
 
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+
     @ManyToOne
     public Department getDepartment() {
         return department;
@@ -82,51 +85,6 @@ public class Employee {
 
     public void setDepartment(Department department) {
         this.department = department;
-    }
-
-    public void setDepartment(int departmentID)
-    {
-        if (departmentID!=0)
-            try {
-                EntityManager em = JPAUtil.getInstance().getEm();
-                em.getTransaction().begin();
-                Department entity = em.find(Department.class, departmentID);
-                department = entity;
-            } catch (NoResultException e) {
-                department=null;
-            }
-    }
-
-    public void setDepartment()
-    {
-        if (departmentID!=0)
-            try {
-                EntityManager em = JPAUtil.getInstance().getEm();
-                em.getTransaction().begin();
-                Department entity = em.find(Department.class, departmentID);
-                department = entity;
-            } catch (NoResultException e) {
-                department=null;
-            }
-    }
-
-    public int getDepartmentID() {
-        return departmentID;
-    }
-
-    public String getDepartmentName() {
-        if (department!=null)
-            return department.getName();
-        else
-            return "No Department";
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
-    }
-
-    public void setDepartmentID(int departmentID) {
-        this.departmentID = departmentID;
     }
 
     @ManyToMany(mappedBy = "employeeList")
@@ -152,4 +110,30 @@ public class Employee {
             return this.department.getId();
         else
             return 0;
-    }*/
+    }
+
+        public void setDepartment(int departmentID)
+    {
+        if (departmentID!=0)
+            try {
+                EntityManager em = JPAUtil.getInstance().getEm();
+                em.getTransaction().begin();
+                Department entity = em.find(Department.class, departmentID);
+                department = entity;
+            } catch (NoResultException e) {
+                department=null;
+            }
+    }
+
+        public String getDepartmentName() {
+        if (department!=null)
+            return department.getName();
+        else
+            return "No Department";
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    */
