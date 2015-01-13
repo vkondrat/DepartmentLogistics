@@ -292,15 +292,14 @@ public class RESTResources {
 
     @POST
 
-    @Path("/assign/employee-to-project")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    public void assignEmployeeToProject(String jsonString) {
-        Gson gson = new Gson();
-        Assignment assignment = gson.fromJson(jsonString, Assignment.class);
+    //@Path("/assign/employee-to-project")
+    @Path("/projects/{projectId}/employees/{employeeId}")
+   // @Consumes({ MediaType.APPLICATION_JSON })
+    public void assignEmployeeToProject(@PathParam("projectId") int projectId, @PathParam("employeeId") int employeeId) {
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
-        Employee employee = em.find(Employee.class, assignment.getWhat());
-        Project project = em.find(Project.class, assignment.getTo());
+        Employee employee = em.find(Employee.class, employeeId);
+        Project project = em.find(Project.class, projectId);
         project.getEmployeeList().add(employee);
         employee.getProjectList().add(project);
         em.merge(employee);
@@ -310,15 +309,13 @@ public class RESTResources {
     }
 
     @POST
-    @Path("/assign/project-to-employee")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    public void assignProjectToEmployee(String jsonString) {
-        Gson gson = new Gson();
-        Assignment assignment = gson.fromJson(jsonString, Assignment.class);
+    @Path("/employees/{employeeId}/projects/{projectId}")
+    // @Consumes({ MediaType.APPLICATION_JSON })
+    public void assignProjectToEmployee(@PathParam("employeeId") int employeeId, @PathParam("projectId") int projectId) {
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
-        Employee employee = em.find(Employee.class, assignment.getTo());
-        Project project = em.find(Project.class, assignment.getWhat());
+        Employee employee = em.find(Employee.class, employeeId);
+        Project project = em.find(Project.class, projectId);
         project.getEmployeeList().add(employee);
         employee.getProjectList().add(project);
         em.merge(employee);
