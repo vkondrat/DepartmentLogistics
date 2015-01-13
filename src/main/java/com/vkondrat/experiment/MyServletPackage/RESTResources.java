@@ -292,9 +292,7 @@ public class RESTResources {
 
     @POST
 
-    //@Path("/assign/employee-to-project")
     @Path("/projects/{projectId}/employees/{employeeId}")
-   // @Consumes({ MediaType.APPLICATION_JSON })
     public void assignEmployeeToProject(@PathParam("projectId") int projectId, @PathParam("employeeId") int employeeId) {
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
@@ -310,7 +308,6 @@ public class RESTResources {
 
     @POST
     @Path("/employees/{employeeId}/projects/{projectId}")
-    // @Consumes({ MediaType.APPLICATION_JSON })
     public void assignProjectToEmployee(@PathParam("employeeId") int employeeId, @PathParam("projectId") int projectId) {
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
@@ -324,6 +321,35 @@ public class RESTResources {
         em.close();
     }
 
+    /************************************ DELETE removes the project from the employee and the other way ************************************/
+    @DELETE
+    @Path("/projects/{projectId}/employees/{employeeId}")
+    public void removeEmployeeFromProject(@PathParam("projectId") int projectId, @PathParam("employeeId") int employeeId) {
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = em.find(Employee.class, employeeId);
+        Project project = em.find(Project.class, projectId);
+        project.getEmployeeList().remove(employee);
+        employee.getProjectList().remove(project);
+        em.merge(employee);
+        em.merge(project);
+        em.getTransaction().commit();
+        em.close();
+    }
+    @DELETE
+    @Path("/employees/{employeeId}/projects/{projectId}")
+    public void removeProjectFromEmployee(@PathParam("projectId") int projectId, @PathParam("employeeId") int employeeId) {
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = em.find(Employee.class, employeeId);
+        Project project = em.find(Project.class, projectId);
+        project.getEmployeeList().remove(employee);
+        employee.getProjectList().remove(project);
+        em.merge(employee);
+        em.merge(project);
+        em.getTransaction().commit();
+        em.close();
+    }
 
     /************************************ TESTING ************************************/
     @GET
