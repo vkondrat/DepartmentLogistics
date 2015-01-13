@@ -229,30 +229,28 @@ public class RESTResources {
         em.close();
         return gson.toJson(department.getEmployeeList().toArray());
     }
-/*
+
     @GET
-    @Path("/project/{id}/employee")
+    @Path("/project/{id}/employees")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Object getEmployeesByProject(@PathParam("id") int id) {
-
+        Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
         Project project = new CRUDService<Project>().findEntity(id, Project.class);
         em.close();
-        return project.getEmployeeList();
+        return gson.toJson(project.getEmployeeList().toArray());
     }
 
     @GET
-    @Path("/employee/{id}/project")
+    @Path("/employee/{id}/projects")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Object getProjectsByEmployee(@PathParam("id") int id) {
+        Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
         Employee employee = new CRUDService<Employee>().findEntity(id, Employee.class);
         em.close();
-        return employee.getProjectList();
+        return gson.toJson(employee.getProjectList().toArray());
     }
-    // Not updated the employees list Error 500*/
 
     /************************************ Assignment ************************************/
 
