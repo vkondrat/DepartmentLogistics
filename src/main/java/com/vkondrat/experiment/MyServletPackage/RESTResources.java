@@ -20,6 +20,21 @@ import java.util.List;
 @Path("/rest")
 public class RESTResources {
 
+   /* *//************************************ GET ************************************//*
+    @GET
+    @Path("/department/{departmentId}/employees")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Employee getEmployeesFromDepartment(@PathParam("departmentId") int departmentId) {
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Department department = em.find(Department.class, departmentId);
+        em.getTransaction().commit();
+        em.close();
+
+
+        return new CRUDService<Employee>().findEntity(departmentId, Employee.class);
+    }*/
+
     /************************************ POST ************************************/
 
     @POST
@@ -27,6 +42,8 @@ public class RESTResources {
     @Consumes("application/json")
 
     public void addDepartment(String jsonString) throws SQLException {
+
+
         new CRUDService<Department>().addEntity(jsonString, Department.class);
          }
     @POST
@@ -202,18 +219,17 @@ public class RESTResources {
     /************************************ GET ALL Employees by Department.ID ************************************/
 
 
-/*    @GET
-    @Path("/department/{id}/employee")
+    @GET
+    @Path("/department/{id}/employees")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Object getEmployeesByDepartment(@PathParam("id") int id) {
-
+        Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
         Department department = new CRUDService<Department>().findEntity(id, Department.class);
         em.close();
-        return department.getEmployeeList();
+        return gson.toJson(department.getEmployeeList().toArray());
     }
-
+/*
     @GET
     @Path("/project/{id}/employee")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
