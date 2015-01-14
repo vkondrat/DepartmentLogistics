@@ -28,10 +28,9 @@ public class RESTResources {
     @Consumes("application/json")
 
     public void addDepartment(String jsonString) throws SQLException {
-
-
         new CRUDService<Department>().addEntity(jsonString, Department.class);
          }
+
     @POST
     @Path("/projects")
     @Consumes("application/json")
@@ -98,10 +97,7 @@ public class RESTResources {
     @DELETE
     @Path("/departments/{id}")
     public void deleteDepartmentById(@PathParam("id") int id) {
-  /*     EntityManager em = JPAUtil.getInstance().getEm();
-        Query query = em.createQuery("SELECT e FROM Employee e where e.departmentId=id");
-        List<Employee> list = (List<Employee>) query.getResultList();
-        em.close();*/
+
         EntityManager em = JPAUtil.getInstance().getEm();
         Department department = em.find(Department.class, id);
         em.close();
@@ -119,7 +115,7 @@ public class RESTResources {
 
 
     /************************************ PUT ************************************/
-
+// Plan to optimize to updateFromJSON, but setId requires CRUD to know the nature of the class
     @PUT
     @Path("/employees/{id}")
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -128,7 +124,7 @@ public class RESTResources {
 
         Employee employee = gson.fromJson(jsonString, Employee.class);
         employee.setId(id);
-
+// Put in a separate class, see POST employee
         if (employee.getDepartmentId()!=0){
 
             EntityManager em = JPAUtil.getInstance().getEm();
@@ -175,10 +171,9 @@ public class RESTResources {
     public Object getEmployees() {
         Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
-       // em.getTransaction().begin();
         String qlString = "SELECT p FROM Employee p";
         TypedQuery<Employee> query = em.createQuery(qlString, Employee.class);
-        List<Employee> listEmployee = (List<Employee>) query.getResultList();
+        List<Employee> listEmployee = query.getResultList();
         em.close();
         return gson.toJson(listEmployee.toArray());
     }
@@ -189,10 +184,9 @@ public class RESTResources {
     public Object getDepartments() {
         Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
-      //  em.getTransaction().begin();
         String qlString = "SELECT p FROM Department p";
         TypedQuery<Department> query = em.createQuery(qlString, Department.class);
-        List<Department> listDepartment = (List<Department>) query.getResultList();
+        List<Department> listDepartment = query.getResultList();
         em.close();
         Object A = listDepartment.toArray();
         return gson.toJson(listDepartment.toArray());
@@ -204,10 +198,9 @@ public class RESTResources {
     public Object getProject() {
         Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
-     //   em.getTransaction().begin();
         String qlString = "SELECT p FROM Project p";
         TypedQuery<Project> query = em.createQuery(qlString, Project.class);
-        List<Project> listProject = (List<Project>) query.getResultList();
+        List<Project> listProject = query.getResultList();
         em.close();
         return gson.toJson(listProject.toArray());
     }
@@ -250,45 +243,11 @@ public class RESTResources {
 
     /************************************ Assignment ************************************/
 
-    @POST
-    @Path("/assign/employee-to-department")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    public void assignEmployeeToDepartment(String jsonString) {
-        Gson gson = new Gson();
-        Assignment assignment = gson.fromJson(jsonString, Assignment.class);
-        EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
-        Employee employee = em.find(Employee.class, assignment.getWhat());
-        Department department = em.find(Department.class, assignment.getTo());
-        department.getEmployeeList().add(employee);
-        employee.setDepartment(department);
-        em.merge(employee);
-        em.merge(department);
-        em.getTransaction().commit();
-        em.close();
-    }
+/* Assigning Employee to the Department is done through initializing Employee (see POST or PUT)*/
 
     @POST
-    @Path("/assign/department-to-employee")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    public void assignDepartmentToEmployee(String jsonString) {
-        Gson gson = new Gson();
-        Assignment assignment = gson.fromJson(jsonString, Assignment.class);
-        EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
-        Employee employee = em.find(Employee.class, assignment.getTo());
-        Department department = em.find(Department.class, assignment.getWhat());
-        department.getEmployeeList().add(employee);
-        employee.setDepartment(department);
-        em.merge(employee);
-        em.merge(department);
-        em.getTransaction().commit();
-        em.close();
-    }
-
-    @POST
-
     @Path("/projects/{projectId}/employees/{employeeId}")
+    //PUT in DAO
     public void assignEmployeeToProject(@PathParam("projectId") int projectId, @PathParam("employeeId") int employeeId) {
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
@@ -304,6 +263,7 @@ public class RESTResources {
 
     @POST
     @Path("/employees/{employeeId}/projects/{projectId}")
+    //PUT in DAO
     public void assignProjectToEmployee(@PathParam("employeeId") int employeeId, @PathParam("projectId") int projectId) {
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
@@ -358,3 +318,41 @@ public class RESTResources {
     }
 }
 
+/*
+
+    @POST
+    @Path("/assign/employee-to-department")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public void assignEmployeeToDepartment(String jsonString) {
+        Gson gson = new Gson();
+        Assignment assignment = gson.fromJson(jsonString, Assignment.class);
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = em.find(Employee.class, assignment.getWhat());
+        Department department = em.find(Department.class, assignment.getTo());
+        department.getEmployeeList().add(employee);
+        employee.setDepartment(department);
+        em.merge(employee);
+        em.merge(department);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    @POST
+    @Path("/assign/department-to-employee")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public void assignDepartmentToEmployee(String jsonString) {
+        Gson gson = new Gson();
+        Assignment assignment = gson.fromJson(jsonString, Assignment.class);
+        EntityManager em = JPAUtil.getInstance().getEm();
+        em.getTransaction().begin();
+        Employee employee = em.find(Employee.class, assignment.getTo());
+        Department department = em.find(Department.class, assignment.getWhat());
+        department.getEmployeeList().add(employee);
+        employee.setDepartment(department);
+        em.merge(employee);
+        em.merge(department);
+        em.getTransaction().commit();
+        em.close();
+    }
+ */

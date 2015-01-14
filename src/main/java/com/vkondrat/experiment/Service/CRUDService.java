@@ -9,14 +9,12 @@ import javax.persistence.NoResultException;
 
 public class  CRUDService<T> {
 
-    public void addEntity(String json, Class<T> clazz)
-    {
+    public void addEntity(String json, Class<T> clazz) {
         T entity = getEntityFromJson(json, clazz);
         updateDB(entity);
     }
 
-    public void deleteEntity(int entityId, Class<T> clazz)
-    {
+    public void deleteEntity(int entityId, Class<T> clazz) {
         EntityManager em = JPAUtil.getInstance().getEm();
         em.getTransaction().begin();
         T entity = em.find(clazz, entityId);
@@ -24,8 +22,8 @@ public class  CRUDService<T> {
         em.getTransaction().commit();
         em.close();
     }
-    public T findEntity(int entityId, Class<T> clazz)
-    {
+
+    public T findEntity(int entityId, Class<T> clazz) {
         try {
             EntityManager em = JPAUtil.getInstance().getEm();
             em.getTransaction().begin();
@@ -51,9 +49,26 @@ public class  CRUDService<T> {
         em.getTransaction().commit();
         em.close();
     }
-}
 
-/*
+}
+  /*  public T getRelatedEntitiesById(int id, Class<T> clazz) {
+        Gson gson = new Gson();
+        EntityManager em = JPAUtil.getInstance().getEm();
+        T entity = findEntity(id, clazz);
+        em.close();
+        return entity;
+        return gson.toJson(department.getEmployeeList().toArray()); <- problem here
+    }
+
+
+
+    public void updateFromJSON(String jsonString, int id, Class<T> clazz ){
+        Gson gson = new Gson();
+        T entity = gson.fromJson(jsonString, clazz);
+        entity.setId(id);  <- problem here
+        updateDB(entity);
+    }
+
     public T findEntity(int entityId)
     {
         */

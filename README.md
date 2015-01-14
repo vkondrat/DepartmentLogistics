@@ -12,60 +12,63 @@ How to run:
 - Start an Application Server, Open REST Client 
 
 Examples of HTTP requests:
+ROOT = http://localhost:8080/test-project/rest 
 
 1) Add an entity (POST)
 
 http://localhost:8080/test-project/rest/employees
+(From now ROOT = http://localhost:8080/test-project/rest)
 
 JSON: {"name":"Vlad", "age":27, “departmentId”:1}
+(Note: Employee is assigned to the Department through departmentId) 
 
-http://localhost:8080/test-project/rest/departments
+ROOT/departments
 
 JSON: {"name":"Mathematics"}
 
-http://localhost:8080/test-project/rest/projects
+ROOT/projects
 
 JSON: {"name":"Calculus","startDate":"10-10-1990", "endDate":"1-1-1999"}
 
 2) Get all entities (GET)
 
-http://localhost:8080/test-project/rest/employees (D,P)
+ROOT/employees (D,P)
 
 3)  Find an entity by Id (GET)
 
-http://localhost:8080/test-project/rest/employees/Id (D,P)
+ROOT/employees/Id (D,P)
 
 4) List all employees working for the department {departmentId} (GET) 
 
-http://localhost:8080/test-project/rest/department/{departmentId}/employees
+ROOT/department/{departmentId}/employees
 
 5) Update an entity or add if it's Id is unique (PUT)
 
-http://localhost:8080/test-project/rest/employees/Id (D,P)
+ROOT/employees/Id (D,P)
 
 JSON: {"name":"Vlad","age":27,”departmentId”:2}
 
 6) Delete an entity by Id (DELETE)
 
-http://localhost:8080/test-project/rest/employees/Id (D,P)
+ROOT/employees/Id (D,P)
 
 7) Assign the relationship between employee {employeeId} and project {projectId}
 (many-to-many) (POST)
 
-http://localhost:8080/test-project/rest/projects/{projectId}/employees/{employeeId}  
-http://localhost:8080/test-project/rest/employees/{employeeId}/projects/{projectId}
+ROOT/projects/{projectId}/employees/{employeeId}  
+ROOT/employees/{employeeId}/projects/{projectId}
 
 Note: Assigning an employee to a department is done in (1)
 
 8) Return all projects employee is assigned to (GET) 
-http://localhost:8080/test-project/rest/employee/{employeeId}/projects
+ROOT/employee/{employeeId}/projects
 And the other way
-http://localhost:8080/test-project/rest/project/{employeeId}/employees
+ROOT/project/{employeeId}/employees
 
 
 9) Unassign employee {employeeId} from project {projectId} (DELETE)
-http://localhost:8080/test-project/rest/projects/{projectId}/employees/{employeeId} or 
-http://localhost:8080/test-project/rest/employees/{employeeId}/projects/{projectId}
+ROOT/projects/{projectId}/employees/{employeeId} or 
+ROOT/employees/{employeeId}/projects/{projectId}
 
 Task:
 
