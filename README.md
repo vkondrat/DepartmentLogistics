@@ -48,7 +48,6 @@ JSON: {"name":"Vlad","age":27,”departmentId”:2}
 6) Delete an entity by Id (DELETE)
 
 http://localhost:8080/test-project/rest/employees/Id (D,P)
-Note: Deleting Department is currently not working
 
 7) Assign the relationship between employee {employeeId} and project {projectId}
 (many-to-many) (POST)
