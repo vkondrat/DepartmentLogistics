@@ -17,7 +17,7 @@ Examples of HTTP requests:
 
 http://localhost:8080/test-project/rest/employees
 
-JSON: {"name":"Vlad", "age":27}
+JSON: {"name":"Vlad", "age":27, “departmentId”:1}
 
 http://localhost:8080/test-project/rest/departments
 
@@ -27,7 +27,7 @@ http://localhost:8080/test-project/rest/projects
 
 JSON: {"name":"Calculus","startDate":"10-10-1990", "endDate":"1-1-1999"}
 
-2) Find all entities (GET)
+2) Get all entities (GET)
 
 http://localhost:8080/test-project/rest/employees (D,P)
 
@@ -35,23 +35,38 @@ http://localhost:8080/test-project/rest/employees (D,P)
 
 http://localhost:8080/test-project/rest/employees/Id (D,P)
 
-4) Update an entity or add if it's Id is unique (PUT)
+4) List all employees working for the department {departmentId} (GET) 
+
+http://localhost:8080/test-project/rest/department/{departmentId}/employees
+
+5) Update an entity or add if it's Id is unique (PUT)
 
 http://localhost:8080/test-project/rest/employees/Id (D,P)
 
-JSON: {"id":1, "name":"Vlad","age":27}
+JSON: {"name":"Vlad","age":27,”departmentId”:2}
 
-5) Delete an entity by Id (DELETE)
+6) Delete an entity by Id (DELETE)
 
 http://localhost:8080/test-project/rest/employees/Id (D,P)
+Note: Deleting Department is currently not working
 
-6) Assign the relationship between entities (E one-to-many D; E many-to-many P) (POST)
+7) Assign the relationship between employee {employeeId} and project {projectId}
+(many-to-many) (POST)
 
-http://localhost:8080/test-project/rest/assign/employee-to-department
+http://localhost:8080/test-project/rest/projects/{projectId}/employees/{employeeId}  
+http://localhost:8080/test-project/rest/employees/{employeeId}/projects/{projectId}
 
-(department-to-employee/employee-to-project/project-to-employee)
+Note: Assigning an employee to a department is done in (1)
 
-JSON: {"to":1,"what":1}
+8) Return all projects employee is assigned to (GET) 
+http://localhost:8080/test-project/rest/employee/{employeeId}/projects
+And the other way
+http://localhost:8080/test-project/rest/project/{employeeId}/employees
+
+
+9) Unassign employee {employeeId} from project {projectId} (DELETE)
+http://localhost:8080/test-project/rest/projects/{projectId}/employees/{employeeId} or 
+http://localhost:8080/test-project/rest/employees/{employeeId}/projects/{projectId}
 
 Task:
 

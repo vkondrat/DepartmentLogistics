@@ -9,6 +9,7 @@ import com.vkondrat.experiment.service.CRUDService;
 import com.vkondrat.experiment.transport.Assignment;
 import com.vkondrat.experiment.util.JPAUtil;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -19,21 +20,6 @@ import java.util.List;
 @PerSession
 @Path("/rest")
 public class RESTResources {
-
-   /* *//************************************ GET ************************************//*
-    @GET
-    @Path("/department/{departmentId}/employees")
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Employee getEmployeesFromDepartment(@PathParam("departmentId") int departmentId) {
-        EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
-        Department department = em.find(Department.class, departmentId);
-        em.getTransaction().commit();
-        em.close();
-
-
-        return new CRUDService<Employee>().findEntity(departmentId, Employee.class);
-    }*/
 
     /************************************ POST ************************************/
 
@@ -112,6 +98,16 @@ public class RESTResources {
     @DELETE
     @Path("/departments/{id}")
     public void deleteDepartmentById(@PathParam("id") int id) {
+  /*     EntityManager em = JPAUtil.getInstance().getEm();
+        Query query = em.createQuery("SELECT e FROM Employee e where e.departmentId=id");
+        List<Employee> list = (List<Employee>) query.getResultList();
+        em.close();*/
+        EntityManager em = JPAUtil.getInstance().getEm();
+        Department department = em.find(Department.class, id);
+        em.close();
+        for (Employee employee : department.getEmployeeList()) {
+            new CRUDService<Employee>().deleteEntity(employee.getId(), Employee.class);
+        }
         new CRUDService<Department>().deleteEntity(id, Department.class);
     }
 
@@ -179,7 +175,7 @@ public class RESTResources {
     public Object getEmployees() {
         Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
+       // em.getTransaction().begin();
         String qlString = "SELECT p FROM Employee p";
         TypedQuery<Employee> query = em.createQuery(qlString, Employee.class);
         List<Employee> listEmployee = (List<Employee>) query.getResultList();
@@ -193,7 +189,7 @@ public class RESTResources {
     public Object getDepartments() {
         Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
+      //  em.getTransaction().begin();
         String qlString = "SELECT p FROM Department p";
         TypedQuery<Department> query = em.createQuery(qlString, Department.class);
         List<Department> listDepartment = (List<Department>) query.getResultList();
@@ -208,7 +204,7 @@ public class RESTResources {
     public Object getProject() {
         Gson gson = new Gson();
         EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
+     //   em.getTransaction().begin();
         String qlString = "SELECT p FROM Project p";
         TypedQuery<Project> query = em.createQuery(qlString, Project.class);
         List<Project> listProject = (List<Project>) query.getResultList();
@@ -321,7 +317,7 @@ public class RESTResources {
         em.close();
     }
 
-    /************************************ DELETE removes the project from the employee and the other way ************************************/
+    /************* DELETE removes the project from the employee and the other way ************************************/
     @DELETE
     @Path("/projects/{projectId}/employees/{employeeId}")
     public void removeEmployeeFromProject(@PathParam("projectId") int projectId, @PathParam("employeeId") int employeeId) {
@@ -361,93 +357,4 @@ public class RESTResources {
         return stringBuilder.toString();
     }
 }
-
-/*    *//************************************ GET ALL Employees by Department.ID ************************************//*
-
-
-    @GET
-    @Path("/department/{id}/employee")
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Object getEmployeesByDepartment(String jsonString, @PathParam("id") int id) {
-        //  Gson gson = new Gson();
-        EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
-        Department department = new CRUDService<Department>().findEntity(id, Department.class);
-        em.close();
-        return department.getEmployeeList();
-    }
-// Not updated the employees list Error 500*/
-
-/*@POST
-@Path("/employee/{employeeId}/project/{projectId}")
-@Consumes({ MediaType.APPLICATION_JSON })
-public void assignEmployeeToProjectThroughId(int employeeId, int projectId) {
-    EntityManager em = JPAUtil.getInstance().getEm();
-    em.getTransaction().begin();
-    Employee employee = em.find(Employee.class, employeeId);
-    Project project = em.find(Project.class, projectId);
-    project.getEmployeeList().add(employee);
-    employee.getProjectList().add(project);
-    em.merge(employee);
-    em.merge(project);
-    em.getTransaction().commit();
-    em.close();
-}
-
-    @POST
-    @Path("/project/{projectId}/employee/{employeeId}")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    public void assignProjectToEmployeeThroughId(int projectId, int employeeId) {
-        EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
-        Employee employee = em.find(Employee.class, employeeId);
-        Project project = em.find(Project.class, projectId);
-        project.getEmployeeList().add(employee);
-        employee.getProjectList().add(project);
-        em.merge(employee);
-        em.merge(project);
-        em.getTransaction().commit();
-        em.close();
-    }
-
-// Can I just call assignEmployeeToProjectThroughId(int projectId, int employeeId)
-// How to check if I got the connection
-
- @POST
-    @Path("/employee/{employeeId}/project/{projectId}")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    public void assignEmployeeToProjectThroughId(int employeeId, int projectId) {
-        EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
-        Employee employee = em.find(Employee.class, employeeId);
-        Project project = em.find(Project.class, projectId);
-        project.getEmployeeList().add(employee);
-        employee.getProjectList().add(project);
-        em.merge(employee);
-        em.merge(project);
-        em.getTransaction().commit();
-        em.close();
-    }
-
-    @POST
-    @Path("/project/{projectId}/employee/{employeeId}")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    public void assignProjectToEmployeeThroughId(int projectId, int employeeId) {
-        EntityManager em = JPAUtil.getInstance().getEm();
-        em.getTransaction().begin();
-        Employee employee = em.find(Employee.class, employeeId);
-        Project project = em.find(Project.class, projectId);
-        project.getEmployeeList().add(employee);
-        employee.getProjectList().add(project);
-        em.merge(employee);
-        em.merge(project);
-        em.getTransaction().commit();
-        em.close();
-    }
-
-    // Can I just call assignEmployeeToProjectThroughId(int projectId, int employeeId)
-    // How to check if I got the connection
-    //Delete all employees after the Department got deleted
-*/
-
 
