@@ -1,8 +1,4 @@
-Prerequisits:
-
-- Maven
-- Application Server (example: Tomcat)
-- REST Client (example: Chrome plugin Postman)
+This is a test project that was created by me (Volodymyr Kondratenko) in order to show the level of my performance and knowledge in Java/Java libraries and other services.
 
 Task:
 
@@ -12,11 +8,17 @@ Task:
 - deploy your project to Application Server of your choice (example: Tomcat)
 - Create RESTful services to insert, update, delete, get the data for employees, departments, projects. Use REST client of your choice (example: Chrome plugin Postman) to test your services
 
+Prerequisits:
+
+- Maven
+- Application Server (example: Tomcat)
+- REST Client (example: Chrome plugin Postman)
+
 How to run:
 
 - Download/clone the project;
-- Build the project using Maven (mvn clean; mvn compile; mvn package);
-- Deploy the project to an Application Server (example for Tomcat: Copy test-project.war from DepartmentLogistics/target to Tomcat/webapps)
+- Build the project using Maven (mvn clean package);
+- Deploy the project to an Application Server (example for Tomcat: Copy test-project.war from %PROJECT_ROOT%/target to %TOMCAT_ROOT%/webapps)
 - Start an Application Server, Open REST Client 
 
 Examples of HTTP requests:
