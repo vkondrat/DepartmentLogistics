@@ -1,4 +1,4 @@
-This is a test project that was created by me (Volodymyr Kondratenko) in order to show the level of my performance and knowledge in Java/Java libraries and other services.
+This is a test project developed by Volodymyr Kondratenko.
 
 Task:
 
