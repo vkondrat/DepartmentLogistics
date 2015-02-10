@@ -1,15 +1,12 @@
-package com.vkondrat.experiment.myServletPackage;
+package com.vkondrat.experiment.servlets;
 import com.google.gson.Gson;
 import com.sun.jersey.spi.container.servlet.PerSession;
 import com.vkondrat.experiment.entities.Department;
 import com.vkondrat.experiment.entities.Employee;
 import com.vkondrat.experiment.entities.Project;
-import com.vkondrat.experiment.service.CRUD;
 import com.vkondrat.experiment.service.CRUDService;
-import com.vkondrat.experiment.transport.Assignment;
 import com.vkondrat.experiment.util.JPAUtil;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
